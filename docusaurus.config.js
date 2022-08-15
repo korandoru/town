@@ -59,7 +59,7 @@ const config = {
                     src: 'img/logo.svg',
                 },
                 items: [
-                    {type: 'doc', docId: 'intro', position: 'left', label: '主页'},
+                    {type: 'doc', docId: 'overview', position: 'left', label: '主页'},
                     {to: '/blog', label: '博客', position: 'left'},
                     {
                         href: 'https://github.com/korandoru/open-source-town',
