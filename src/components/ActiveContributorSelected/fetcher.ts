@@ -23,7 +23,6 @@ export default async function fetcher<JSON = any>(ignore): Promise<JSON> {
     });
     const response = await fetch(`https://play.clickhouse.com/?${queryParams}`, {
         method: "GET",
-        mode: "no-cors",
     });
     return response.json();
 }
