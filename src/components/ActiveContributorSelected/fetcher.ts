@@ -1,3 +1,5 @@
+import {ActiveContributor} from "@site/src/components/ActiveContributorSelected/model";
+
 export default async function fetcher<JSON = any>(ignore): Promise<JSON> {
     const queryParams = new URLSearchParams({
         "user": "explorer",
@@ -18,11 +20,16 @@ export default async function fetcher<JSON = any>(ignore): Promise<JSON> {
             )
             WHERE n <= 5
             ORDER BY t, n ASC
-            SETTINGS allow_experimental_window_functions = 1
         `
     });
     const response = await fetch(`https://play.clickhouse.com/?${queryParams}`, {
         method: "GET",
     });
-    return response.json();
+    const result = await response.json();
+    return result.data.map(r => ({
+        actorLogin: r.actor_login,
+        activeMonth: r.t,
+        activityCount: r.c,
+        activityRank: r.n,
+    } as ActiveContributor));
 }

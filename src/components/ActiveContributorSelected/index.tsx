@@ -1,15 +1,15 @@
 import useSWR from "swr";
 import React from "react";
 import fetcher from "./fetcher";
+import {ActiveContributor} from "@site/src/components/ActiveContributorSelected/model";
 
 export default function ActiveContributorSelected(): JSX.Element {
     const {
         data: activeContributors
-    } = useSWR('active-contributor-selected', fetcher);
+    } = useSWR<ActiveContributor[]>('active-contributor-selected', fetcher);
 
     let payload = <>Loading...</>
     if (activeContributors) {
-        const result = activeContributors.data;
         payload = <table>
             <thead>
             <tr>
@@ -21,12 +21,12 @@ export default function ActiveContributorSelected(): JSX.Element {
             </thead>
             <tbody>
             {
-                result.map(line => (
+                activeContributors.map(line => (
                     <tr>
-                        <td>{line.actor_login}</td>
-                        <td>{line.t}</td>
-                        <td>{line.c}</td>
-                        <td>{line.n}</td>
+                        <td>{line.actorLogin}</td>
+                        <td>{line.activeMonth}</td>
+                        <td>{line.activityCount}</td>
+                        <td>{line.activityRank}</td>
                     </tr>
                 ))
             }
