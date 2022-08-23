@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import React from "react";
-import fetcher from "@site/src/components/ActiveContributorSelected/fetcher";
+import fetcher from "./fetcher";
 
 export default function ActiveContributorSelected(): JSX.Element {
     const {
