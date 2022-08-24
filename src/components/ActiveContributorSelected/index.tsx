@@ -1,67 +1,48 @@
 import useSWR from "swr";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import fetcher from "./fetcher";
 import {ActiveContributor} from "@site/src/components/ActiveContributorSelected/model";
-import {FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import lodash from 'lodash';
+import DropDownList from "./drop-down-list";
+import SelectedContributors from "./selected-contributors";
 
 export default function ActiveContributorSelected(): JSX.Element {
     const {
         data: activeContributors
     } = useSWR<ActiveContributor[]>('active-contributor-selected', fetcher);
 
-    const [selectMonth, setSelectMonth] = React.useState('');
+    const activeMonths = useMemo(
+        () => lodash.uniq(activeContributors?.map(line => line.activeMonth).sort()),
+        [activeContributors]
+    )
 
-    let payload = <>Loading...</>
-    if (activeContributors) {
-        const activeMonths = lodash.uniq(activeContributors.map(line => line.activeMonth).sort());
-        const localSelectMonth = selectMonth ? selectMonth : activeMonths[0];
-        const dropDownList = <FormControl sx={{m: 1, minWidth: 120}}>
-            <Select
-                value={localSelectMonth}
-                onChange={(event: SelectChangeEvent) => {
-                    setSelectMonth(event.target.value);
-                }}
-                displayEmpty
-                inputProps={{'aria-label': 'Without label'}}
-            >
-                {activeMonths.map(line => (
-                    <MenuItem value={line}>{line}</MenuItem>
-                ))}
-            </Select>
-        </FormControl>;
-        const selectedContributors = <table>
-            <thead>
-            <tr>
-                <th>参与者</th>
-                <th>活跃度</th>
-                <th>排名</th>
-            </tr>
-            </thead>
-            <tbody>
-            {
-                activeContributors
-                    .filter(line => line.activeMonth.startsWith(localSelectMonth))
-                    .map(line => (
-                        <tr>
-                            <td>{line.actorLogin}</td>
-                            <td>{line.activityCount}</td>
-                            <td>{line.activityRank}</td>
-                        </tr>
-                    ))
-            }
-            </tbody>
-        </table>
+    const [selectMonth, setSelectMonth] = useState(activeMonths[0]);
 
-        payload = <>
-            {dropDownList}
-            {selectedContributors}
-        </>
-    }
+    useEffect(
+        () => {
+            setSelectMonth(activeMonths[0])
+        },
+        [activeMonths[0]]
+    );
 
     return (
         <section>
-            {payload}
+            {
+                activeContributors ?
+                <>
+                    <DropDownList
+                        activeMonths={activeMonths}
+                        selectMonth={selectMonth}
+                        setSelectMonth={setSelectMonth}
+                    />
+                    <SelectedContributors
+                        activeContributors={activeContributors}
+                        selectMonth={selectMonth}
+                    />
+                </>
+                :
+                <>Loading...</>
+            }
         </section>
     )
 }
