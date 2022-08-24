@@ -2,7 +2,8 @@ import useSWR from "swr";
 import React from "react";
 import fetcher from "./fetcher";
 import {ActiveContributor} from "@site/src/components/ActiveContributorSelected/model";
-import {FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent} from "@mui/material";
+import {FormControl, MenuItem, Select, SelectChangeEvent} from "@mui/material";
+import lodash from 'lodash';
 
 export default function ActiveContributorSelected(): JSX.Element {
     const {
@@ -11,7 +12,7 @@ export default function ActiveContributorSelected(): JSX.Element {
 
     let payload = <>Loading...</>
     if (activeContributors) {
-        const activeMonths = activeContributors.map(line => line.activeMonth).sort();
+        const activeMonths = lodash.uniq(activeContributors.map(line => line.activeMonth).sort());
         const [selectMonth, setSelectMonth] = React.useState(activeMonths[0]);
         const dropDownList = <FormControl sx={{m: 1, minWidth: 120}}>
             <Select
