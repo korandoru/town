@@ -2,6 +2,7 @@ import useSWR from "swr";
 import React from "react";
 import fetcher from "./fetcher";
 import {ActiveContributor} from "@site/src/components/ActiveContributorSelected/model";
+import {FormControl, FormHelperText, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 
 export default function ActiveContributorSelected(): JSX.Element {
     const {
@@ -10,28 +11,49 @@ export default function ActiveContributorSelected(): JSX.Element {
 
     let payload = <>Loading...</>
     if (activeContributors) {
-        payload = <table>
+        const activeMonths = activeContributors.map(line => line.activeMonth).sort();
+        const [selectMonth, setSelectMonth] = React.useState(activeMonths[0]);
+        const dropDownList = <FormControl sx={{m: 1, minWidth: 120}}>
+            <Select
+                value={selectMonth}
+                onChange={(event: SelectChangeEvent) => {
+                    setSelectMonth(event.target.value);
+                }}
+                displayEmpty
+                inputProps={{'aria-label': 'Without label'}}
+            >
+                {activeMonths.map(line => (
+                    <MenuItem value={line}>{line}</MenuItem>
+                ))}
+            </Select>
+        </FormControl>;
+        const selectedContributors = <table>
             <thead>
             <tr>
                 <th>参与者</th>
-                <th>时间段</th>
                 <th>活跃度</th>
                 <th>排名</th>
             </tr>
             </thead>
             <tbody>
             {
-                activeContributors.map(line => (
-                    <tr>
-                        <td>{line.actorLogin}</td>
-                        <td>{line.activeMonth}</td>
-                        <td>{line.activityCount}</td>
-                        <td>{line.activityRank}</td>
-                    </tr>
-                ))
+                activeContributors
+                    .filter(line => line.activeMonth.startsWith(selectMonth))
+                    .map(line => (
+                        <tr>
+                            <td>{line.actorLogin}</td>
+                            <td>{line.activityCount}</td>
+                            <td>{line.activityRank}</td>
+                        </tr>
+                    ))
             }
             </tbody>
         </table>
+
+        payload = <>
+            {dropDownList}
+            {selectedContributors}
+        </>
     }
 
     return (
