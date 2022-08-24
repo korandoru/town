@@ -15,7 +15,7 @@ export default function ActiveContributorSelected(): JSX.Element {
     "active-contributor-selected",
     fetcher
   );
-  const isLoading = !data && !error;
+  const isLoading = !activeContributors && !error;
   const activeMonths = lodash.uniq(
     (activeContributors || []).map((line) => line.activeMonth).sort()
   );
