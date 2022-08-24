@@ -10,13 +10,15 @@ export default function ActiveContributorSelected(): JSX.Element {
         data: activeContributors
     } = useSWR<ActiveContributor[]>('active-contributor-selected', fetcher);
 
+    const [selectMonth, setSelectMonth] = React.useState('');
+
     let payload = <>Loading...</>
     if (activeContributors) {
         const activeMonths = lodash.uniq(activeContributors.map(line => line.activeMonth).sort());
-        const [selectMonth, setSelectMonth] = React.useState(activeMonths[0]);
+        const localSelectMonth = selectMonth ? selectMonth : activeMonths[0];
         const dropDownList = <FormControl sx={{m: 1, minWidth: 120}}>
             <Select
-                value={selectMonth}
+                value={localSelectMonth}
                 onChange={(event: SelectChangeEvent) => {
                     setSelectMonth(event.target.value);
                 }}
@@ -39,7 +41,7 @@ export default function ActiveContributorSelected(): JSX.Element {
             <tbody>
             {
                 activeContributors
-                    .filter(line => line.activeMonth.startsWith(selectMonth))
+                    .filter(line => line.activeMonth.startsWith(localSelectMonth))
                     .map(line => (
                         <tr>
                             <td>{line.actorLogin}</td>
