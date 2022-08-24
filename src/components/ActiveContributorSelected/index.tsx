@@ -16,7 +16,7 @@ export default function ActiveContributorSelected(): JSX.Element {
         [activeContributors]
     )
 
-    const [selectMonth, setSelectMonth] = useState(activeMonths[0]);
+    const [selectMonth, setSelectMonth] = useState('');
 
     useEffect(
         () => {
