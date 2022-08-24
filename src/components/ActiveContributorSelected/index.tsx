@@ -11,11 +11,12 @@ import {
 import lodash from "lodash";
 
 export default function ActiveContributorSelected(): JSX.Element {
-  const { data: activeContributors = [], error } = useSWR<ActiveContributor[]>(
+  const { data, error } = useSWR<ActiveContributor[]>(
     "active-contributor-selected",
     fetcher
   );
-  const isLoading = !activeContributors && !error;
+  const isLoading = !data && !error;
+  const activeContributors = data || [];
   const activeMonths = lodash.uniq(
     activeContributors.map((line) => line.activeMonth).sort()
   );
