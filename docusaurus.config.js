@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: '开源小镇',
-    tagline: '连接社群的开发者',
+    tagline: '连接个人、社群和企业',
     url: 'https://town.korandoru.io',
     baseUrl: '/',
     onBrokenLinks: 'throw',
@@ -82,6 +82,7 @@ const config = {
                 theme: lightCodeTheme,
                 darkTheme: darkCodeTheme,
             },
+            image: 'img/korandoru.png'
         }),
     themes: [
         [require.resolve("@easyops-cn/docusaurus-search-local"), {hashed: true}],
