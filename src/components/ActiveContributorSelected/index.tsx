@@ -19,10 +19,7 @@ export default function ActiveContributorSelected(): JSX.Element {
 
     useEffect(
         () => {
-            if (
-                lodash.isEmpty(activeMonths) === false
-                && typeof activeMonths[0] !== "undefined"
-            ) {
+            if (activeMonths[0]) {
                 setSelectMonth(activeMonths[0])
             }
         },
