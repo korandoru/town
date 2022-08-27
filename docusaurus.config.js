@@ -31,8 +31,8 @@ const config = {
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
                 docs: {
-                    path: "docs",
-                    routeBasePath: "/docs",
+                    path: "individuals",
+                    routeBasePath: "/individuals",
                     showLastUpdateAuthor: true,
                     showLastUpdateTime: true,
                     sidebarPath: require.resolve('./sidebars.js'),
@@ -59,8 +59,11 @@ const config = {
                     src: 'img/logo.svg',
                 },
                 items: [
-                    {type: 'doc', docId: 'overview', position: 'left', label: '主页'},
-                    {to: '/blog', label: '博客', position: 'left'},
+                    {to: '/individuals/overview', label: '开源个人之路', position: 'left'},
+                    {to: '/communities/overview', label: '开源社群案例', position: 'left'},
+                    {to: '/enterprise/overview', label: '开源企业沙盘', position: 'left'},
+                    {to: '/dashboard/overview', label: '数字看板', position: 'left'},
+                    {to: '/blog', label: '集体博客', position: 'left'},
                     {
                         href: 'https://github.com/korandoru/open-source-town',
                         position: 'right',
@@ -82,6 +85,44 @@ const config = {
         }),
     themes: [
         [require.resolve("@easyops-cn/docusaurus-search-local"), {hashed: true}],
+    ],
+    plugins: [
+        [
+            '@docusaurus/plugin-content-docs',
+            {
+                id: 'communities',
+                path: 'communities',
+                routeBasePath: '/communities',
+                showLastUpdateAuthor: true,
+                showLastUpdateTime: true,
+                sidebarPath: require.resolve('./sidebars.js'),
+                editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
+            },
+        ],
+        [
+            '@docusaurus/plugin-content-docs',
+            {
+                id: 'enterprise',
+                path: 'enterprise',
+                routeBasePath: '/enterprise',
+                showLastUpdateAuthor: true,
+                showLastUpdateTime: true,
+                sidebarPath: require.resolve('./sidebars.js'),
+                editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
+            },
+        ],
+        [
+            '@docusaurus/plugin-content-docs',
+            {
+                id: 'dashboard',
+                path: 'dashboard',
+                routeBasePath: '/dashboard',
+                showLastUpdateAuthor: true,
+                showLastUpdateTime: true,
+                sidebarPath: require.resolve('./sidebars.js'),
+                editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
+            },
+        ],
     ]
 };
 
