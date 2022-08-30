@@ -85,7 +85,14 @@ const config = {
             image: 'img/korandoru.png'
         }),
     themes: [
-        [require.resolve("@easyops-cn/docusaurus-search-local"), {hashed: true}],
+        [
+            require.resolve("@easyops-cn/docusaurus-search-local"),
+            {
+                hashed: true,
+                indexDocs: false,
+                indexPages: true,
+            }
+        ],
     ],
     plugins: [
         [
