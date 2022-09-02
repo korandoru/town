@@ -91,6 +91,7 @@ const config = {
                 hashed: true,
                 indexDocs: false,
                 indexPages: true,
+                language: ["en", "zh"],
             }
         ],
     ],
