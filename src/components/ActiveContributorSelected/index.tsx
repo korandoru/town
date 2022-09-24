@@ -27,8 +27,8 @@ export default function ActiveContributorSelected(): JSX.Element {
     );
 
 
-    if (error) return "An error has occurred.";
-    if (!activeContributors) return "Loading...";
+    if (error) return <>An error has occurred.</>;
+    if (!activeContributors) return <>Loading...</>;
 
     return (
         <section>
