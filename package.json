@@ -13,8 +13,8 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "format": "prettier --write '**/*.ts'",
-    "format-check": "prettier --check '**/*.ts'",
+    "format": "prettier --write '**/*.ts' '**/*.tsx'",
+    "format-check": "prettier --check '**/*.ts' '**/*.tsx'",
     "lint": "eslint src/**/*.ts"
   },
   "dependencies": {
