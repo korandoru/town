@@ -1,10 +1,10 @@
-import {ActiveContributor} from "@site/src/components/ActiveContributorSelected/model";
+import {ActiveContributor} from './model'
 
 export default async function fetcher<JSON = any>(ignore): Promise<JSON> {
-    const queryParams = new URLSearchParams({
-        "user": "explorer",
-        "default_format": "JSON",
-        "query": `
+  const queryParams = new URLSearchParams({
+    user: 'explorer',
+    default_format: 'JSON',
+    query: `
             SELECT *
             FROM
             (
@@ -21,15 +21,18 @@ export default async function fetcher<JSON = any>(ignore): Promise<JSON> {
             WHERE n <= 5
             ORDER BY t, n ASC
         `
-    });
-    const response = await fetch(`https://play.clickhouse.com/?${queryParams}`, {
-        method: "GET",
-    });
-    const result = await response.json();
-    return result.data.map(r => ({
+  })
+  const response = await fetch(`https://play.clickhouse.com/?${queryParams}`, {
+    method: 'GET'
+  })
+  const result = await response.json()
+  return result.data.map(
+    r =>
+      ({
         actorLogin: r.actor_login,
         activeMonth: r.t,
         activityCount: r.c,
-        activityRank: r.n,
-    } as ActiveContributor));
+        activityRank: r.n
+      } as ActiveContributor)
+  )
 }
