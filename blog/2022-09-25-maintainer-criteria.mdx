@@ -1,0 +1,142 @@
+---
+slug: maintainer-criteria
+title: Maintainer 是怎样练成的？
+authors: [tison]
+tags: [开源协同, 社群治理]
+---
+
+开源社群存在的目的，主要是制造高质量的开源软件，并促进该软件的使用。为了达到这两个目标，开源社群需要调动参与者的积极性，并且协同背景多样的参与者的贡献，共同修复软件缺陷、改善软件体验、增加软件功能、组织社群活动和发展软件生态。大多数开源社群的环境里，实际进行组织协调工作的成员，就是社群的维护者（Maintainer）。
+
+不同开源社群对角色的定位和命名有着各自的风格。[Vim](https://github.com/vim/vim/graphs/contributors) 社群生态丰富，但是 Bram Moolenaar 是唯一的[“仁慈的独裁者”](https://en.wikipedia.org/wiki/Benevolent_dictator_for_life)。[Kubernetes](https://github.com/kubernetes/community/blob/master/community-membership.md) 制作了一套基于 SIG 划分的从 Reviewer 到 Approver 再到 Owner 的体系。[Apache](https://www.apache.org/foundation/how-it-works.html#roles) 基金会的每个项目都使用 Committer + Project Management Committee 的治理结构。[Rust](https://www.rust-lang.org/governance) 和如今的 [Linux](https://docs.kernel.org/process/maintainers.html) 采用分模块的 Team Maintainer 模式。[PostgreSQL](https://www.postgresql.org/community/contributors/) 则由整个项目级别的 Core Team + Committer 来治理。
+
+对于刚起步的开源项目而言，这些眼花缭乱的标准背后，其实是一个大致相同的对项目维护者的标准。对于想要深入参与开源社群的人来说，理解了项目维护者的标准，也就明白该做些什么以成为一名维护者了。本文主要对这个标准的不同层面进行讨论，顺带对比上面这些经过演变的不同版本。
+
+<!--truncate-->
+
+## 做出承诺的人
+
+开源社群是围绕开源软件建立起来的，开发软件是开源社群主要的生活内容。虽然开源软件在开源协议的许可下允许任何人用于任何用途，但是想要参与软件开发，向上游版本提交补丁，在合并之前则通常需要维护者的评审。这也是绝大多数开发者对社群维护者的第一印象：维护者是少部分具有提交代码到主分支的权限的人。
+
+由于 Git 的 commit 命令跟代码提交相关联，且许多开源社群的维护者都有 Committer 头衔，于是开发者就简单的把维护者等同于有提交代码权限的人。其实，commit 的本意有做出承诺的意思，把 committer 解释成做出承诺的人会贴切一些。社群成员承诺在代码、文档、设计或组织活动等方面做出贡献，并且已经坚持一段时间如此，当前的维护者群体跟这名成员合作愉快，于是吸纳为团队的一员。
+
+这种语言体系能够囊括不同类型的贡献参与，同时强调了为社群做出贡献的衡量标准，而不只是写了一段好的代码。
+
+## 赢得权威
+
+开源社群的维护者都是对社群做出承诺的人，这种承诺不是口头说说，也不是[赌咒发誓将来会做](https://github.com/datafuselabs/databend/issues/7438#issuecomment-1240167061)，而是实实在在的已经做出相应的贡献。
+
+[The Apache Way](https://www.apache.org/theapacheway/index.html) 的第一条就是 Earned Authority 赢得权威，或者说，权威是参与者亲自赢得的。开源社群对项目维护者大致相同的标准，也就是能够亲力亲为赢得权威这一点。
+
+:::note 赢得权威
+
+Earned Authority: all individuals are given the opportunity to participate, but their influence is based on publicly earned merit – what they contribute to the community. Merit lies with the individual, does not expire, is not influenced by employment status or employer, and is non-transferable (merit earned in one project cannot be applied to another). [More on merit](https://www.apache.org/foundation/how-it-works.html#meritocracy).
+
+:::
+
+比如，我从 Flink 使用 Curator 的切入点进入到 Curator 的社群以后，积极地参与 Curator 补丁的评审。在阅读 Curator 代码的过程中，我按照遗留代码的 TODO 注释完成了重构，又出于自己的需求实现了新的重试策略。这些表现让 Curator 的维护者团队（PMC）认为我是一个不错的维护者候选人，于是在某天早上，我收到了邀约邮件并欣然接受。
+
+比如，@PragmaTwice 通过改进 CMake 构建逻辑的契机进入 Kvrocks 社群之后，持续发起并主导了一系列的改进，包括对 TLS 的支持。同时，他也积极评审其他参与者提交的补丁，并且对自己完成的工作不尽完善的地方能够及时响应追加补丁。他在项目需要的技术方向表现的能力和对社群发展的贡献赢得了当前维护者的一致认同，就在本月初，Kvrocks PMC 通过决议邀请他成为 PMC 的一员。
+
+比如，我在腾讯同期的朋友早年参与 Kubernetes Dashboard 项目，边改逻辑边做文档的中文翻译。成为部分模块的 Reviewer 之后，由于种种原因不再活跃，也就没有进一步成为 Kubernetes 体系下的 Approver 角色。
+
+赢得权威这条看似简单唯一的标准，其实包含了几个层面的高要求。
+
+### 亲力亲为
+
+**第一点，必须是本人的参与。**
+
+Earned Authority 可以衍生成 **Earn Authority by Contributions, not by the Position.** 这就是说，赢得权威的贡献都是你自己做成的，而不是因为你在公司的下属是某个项目的维护者，你是他们的老板，你就能继承了他们的权威。
+
+这一点在公司主导的项目体现得尤为明显。无论贡献属于个人怎么被强调，社群当中 $dayjob 就跟开发这个软件相关的人，多少都会受到老板的影响。这本来是一种公司利益借由雇员表达的正常手段，但是如果想要把公司里的 credit 直接平移到社群的 credit 上，就会导致一些非公平的结果。
+
+例如，当 PingCAP 想要为 TiDB 引入关键配置 double check 的 [config reviewer](https://internals.tidb.io/t/topic/374/9) 的时候，下意识的就把各个团队的 leader 直接列上，其中甚至有刚加入公司不久的员工。我好歹用“领导也不希望处理这些日常事务”给应对过去了，但是其实还有一点没有提及，那就是今天是因为他是团队 leader 给予了 config reviewer 的权限，明天转岗或者离职了怎么办呢？难道角色也跟着平移，开源社群只是说说而已，实则是公司的一个部门吗？
+
+### 创造价值
+
+**第二点，必须有的放矢地创造价值。**
+
+这实际上是对参与者能力的考量。你不会仅仅因为修了一千个拼写错误就成为项目的维护者。虽然开源社群认可代码、文档、设计或组织活动等等多样的贡献，但是作为维护者有决策项目接受什么变更，举办什么活动，以及未来的发展方向。为了保证项目尽可能不受外行领导内行，拍脑门的决策的影响，吸纳新的维护者的时候，对候选人在对应领域已有的贡献和能力会有一个隐形的评估。
+
+这一点也意味着参与开源社群的时候，不能一味地求多，还应该求精。上面提到的修正一千个拼写错误大部分人能够理解，但是为了刷一个项目层面的重要贡献，以自己非专业的能力强行做专业的事情，也往往会引起维护者的负面评价。
+
+比如自己从来没有写过一行代码，却一上来就要在社群里推行新的代码风格或者工作流程。由于没有亲身参与过软件开发的过程，对这个社群的风格及其主要成员的关注点的认识有偏差，想象出来的问题和解决方案往往也是不切实际的。
+
+我在 PingCAP 推行过 Pull Request 必须对应 issue 的策略，现在回想起来就是一个不合适的做法。虽然当时我也知道“必须”是过了，总会在推行过程里引入各种各样的折衷，但是一方面我没有把这件事情彻底做完，另一方面其实这一个打点并不犀利。实际问题是开发者提交补丁和记录问题的时候缺少上下文和交叉引用，以至于大家都在写代码，但是却往往只关注自己当前就在写的这一个补丁，这在复杂项目当中是行不通的。
+
+当然，这不是说没有亲自写过代码就不能提出建议，毕竟参与是多样性的，对于软件工程的老手来说，有些问题只一看也是明显的。不过在实际提案和实行的过程中，以商量的态度跟实际会受建议影响的人竭诚沟通，实地考察和验证提案的影响，最终在当前维护者团队的支持下实施。换句话说，你只能发现和解决已经存在的、社群成员承认的问题，而不能因为要解决某个问题是 OKR 的一部分，例如提高代码测试覆盖率、降低代码圈复杂度，而强推新的标准或流程。
+
+对于代码开发来说也是一样。Twice 在 Kvrocks 提交补丁的时候就遇到过一个新成员主动 review 他的代码，但是所提的问题却非常初级。一个利用新的 C++ 特性改进代码质量的补丁，这位成员不了解 C++ 的标准细节，就提出一些想象出来的边界情况。虽然我赞同不懂就问，但是提问请教的措辞和 request changes 的措辞给到维护者的印象是不一样的。另外，社群成员都不熟悉的领域和都应该熟悉的领域里的措辞也是不一样的。
+
+我在 Kvrocks 也拒绝过两个参与者。一个是说着要帮助改进测试，但是却来了一句“你能告诉我具体要怎么做吗，我不知道要干嘛”的。我就差说我不是你的保姆，你能干就干，不懂可以问，不知道问什么可以不做。另一个是要改进 Kvrocks 传参逻辑的，这种重大的用户界面变更没有任何设计直接就怼了一个用脚本缝合的 monkey patch 来，我只能建议先想清楚要做成的使用方式是什么样的再来。
+
+* [Move TCL test unit/type/bitmap to Go case](https://github.com/apache/incubator-kvrocks/issues/823)
+* [kvrocks docker can use environment variables define config](https://github.com/apache/incubator-kvrocks/pull/850)
+
+反转的例子也有。我在 Curator 提出的修复分布式选主模块的活锁问题的时候，一位 Flink Committer 老哥上来指点江山。一开始，我看他都没注意 PR 内容是啥就泛泛而谈 PR 拆分，以前也没见过这人，就不客气的回了一句“你告诉我怎么拆分”。后来他也先道了歉，然后仔细看了补丁内容，给出了不错的评审意见和测试用例，我也认同他是一个有能力的开发者。如果后续有持续的参与，有可能会提他做维护者。
+
+* [CURATOR-644. CURATOR-645. Fix livelock in LeaderLatch](https://github.com/apache/curator/pull/430)
+
+### 持之以恒
+
+**这就引出第三点，必须持续参与以赢得权威。**
+
+开源社群作为由参与者组成的社群，是一个有机体。这就意味着它的发展是连贯的，而不是一步到位的。
+
+Twice 将 Kvrocks 的构建系统从 Makefile 迁移到 CMake 之后，并不是做完就算了，而是后续还有其他成员包括他自己踩出来的问题，还有新功能加入是跟 CMake 整合的需要和进一步带来的新问题。如果 Twice 没有为他的补丁负责而是做完就算，如果社群当中也没人接过维护的职责，那么这份 credit 也就自然消散了，说不定还需要其他人回滚这部分变更。
+
+比如 BookKeeper 社群想要把构建系统从 Maven 换成 Gradle 以利用增量编译的好处，以及想要把网站迁移到新的架构上面去，这些工作都半途而废了，最终社群维护者需要付出额外的努力来回滚，最初做出这些变更的人自然也算不上赢得权威。又比如，TiKV 的 VerKV 方案没有经过仔细的评审，因为一些外部原因强行推进，但是从来没人正式使用也没人响应问题，到头来维护者清理相关代码也花费了不少时间。
+
+不同项目在不同阶段对参与时间的要求自然是不一样的。新生的项目一片勃勃生机、万物竞发的气象，亟需扩大维护者的队伍来响应参与者提交的补丁和反馈建议，往往在一个水平不错的参与者持续贡献一个月或三个月后就开始考虑邀请成为新的维护者。成熟的项目内容复杂，哪怕掌握一个模块及其相关知识也要花费相当的时间。为了避免在不够了解项目和模块背景的情况下新的维护者做出冒进的决策，往往会延长到半年、一年乃至数年的考察周期。
+
+比如 PostgreSQL 在 EDB 的收购案之前，Core Team 的五名成员加上二十几名 Committer 基本能够响应 PG 社群内所有的事情，直到收购案导致 Core Team 成员多样性不足，才推动引入了来自其他公司的两名新成员。这两名新成员都是 PG 社群十年以上的长期参与者。
+
+* [New PostgreSQL Core Team Members](https://www.postgresql.org/about/news/new-postgresql-core-team-members-2103/)
+
+反过来看另一个极端，Raku 语言还叫 Perl 6 的时候，它的成员吸纳策略就是任何对项目有兴趣的人，只要提交若干个补丁并被合并，哪怕只是文档的修正，也会给予这个人整个项目除了解释器以外的维护者权限。这样的策略让它在短时间内建成了两百余人的维护者团队，并且其中十几个非常热情的参与者领导完成了测试、文档和工具库的开发。这种策略有一个前提，那就是项目必须事实上有一个仁慈的独裁者或者精英团队，才能在低门槛吸纳的新成员做出主观恶意的行为或者水平有限却热衷于提出关键改动的时候予以制止甚至踢出。如果社群没有这样众望所归的人，那么一旦有新成员的理念与项目原本的主旨背道而驰，就容易反客为主，吞噬原本的社群。
+
+## 参与社群事务
+
+如果说 Apache 区分 Committer 和 PMC Member 有什么标准的话，那就是看社群成员多大程度上会去参与社群事务了。
+
+相当部分的社群成员来到社群，只是为了提问和得到解答。其中有能力解决自己问题的成员，如果能够持续的提交高质量的补丁或者撰写文档，则有可能被维护者授予对应仓库的权限以简化他参与的流程。但是，尤其是出于工作需要而参与到一个开源社群的成员，往往并不关心其他人在干什么，也不关心项目的未来、生态的发展和软件的影响力。如果某个开源社群对维护者团队设置具体的角色，那么这样的人就很难成为核心团队（Core Team）的成员。
+
+对社群事务的关注和参与，包括但不限于：
+
+1. 回答用户问题，为软件站台。这点可以一下子就把只是 $dayjob 跟本软件相关的人筛选出来。许多打工人只是工作需要写代码，恰巧这些代码需要写在开源软件上。他们不会关注软件社群里其他用户的问题，因为“这跟我有什么关系呢”。而社群的维护者是对社群生产的软件有极高的认同感和责任心，并且自觉有义务推广它的使用的人，自然会关注使用软件的人碰到的问题，解决问题促进使用，总结问题看看软件哪些方面还有不足。[Flink 的参与指南](https://flink.apache.org/contributing/how-to-contribute.html)就明确把  Support Flink Users 和 Spread the Word About Flink 作为社群贡献的一部分。
+2. 参与软件版本发布。越是复杂的软件，发布流程和发布前的测试、校验就越是复杂。Flink 社群把参与发版作为邀请成为 PMC Member 的重要加分项。虽然一般来说只有当前的维护者群体才有最终发布软件的权限，但是作为社群成员，帮助测试和校验，提供反馈，或者和当前的发布团队（Release Manager）沟通参与构件的准备和 blocking issue 的处理，都是为交付软件做出的重要贡献。对于大部分用户而言，不稳定的主分支上的代码是不能在生产环境使用的，只有经过 PMC 认证投票通过发布的版本才是可信赖的版本。
+3. 建设社群基础设施。有些开源社群，例如 Rust 和 Kubernetes 会有专门的团队负责建设和维护基础设施，包括仓库权限和各项功能的设置，CI 流水线的架设和资源使用的监控，网站构建和部署的自动化，等等。对于没有那么复杂生态的社群，这些工作仍然需要有人做，做好了对社群开发、迭代和宣传的效率有明显地提升，而大部分只关心写核心代码的人很少会关注到基础设施的建设和维护。因此充分理解社群的目标和参与到社群日常生活的基础上，愿意承担基础设施的建设和维护工作的成员，在维护者团队考虑吸纳新成员的时候会有相对的优势。
+4. 关注艰苦和乏味的工作，又能领导重要的功能扩展的设计实现。这两点稍微有些冲突，出自[《大教堂与集市》](https://book.douban.com/subject/25881855/) 3.13 节“什么才是好礼物”。一方面，社群维护者对项目的责任心促使他能够去做艰苦和乏味的工作，比如极难调试的软件缺陷、修复不稳定的测试、编写技术文档和优化开发构建流程，等等。另一方面，高质量的项目之所以是高质量的项目，不是因为流程良好就能自动写出来，高质量的项目根本上是由极具才能的工程师写出来的好代码造就的。Flink 的流计算 API 的作者，Pulsar Functions 的作者，都毫无疑问的是对应项目的维护者。
+5. 指导新人，传递知识。开源社群合作开发的一大优势就在于能够最大程度的避免知识单点故障、知识孤岛和知识断层的现象。为了做到这一点，社群维护者积极指导新人，传递社群工作方式和软件专有知识是必不可少的。即使社群就软件使用、设计和社群运转的规则特供了详尽的文档，经过人的连接解释和畅聊一遍，给到新人的体验和理解也很不一样。基本上，每个新的维护者都有自己的领路人，而此后他也会成为其他人的领路人。
+
+关于第四点和“社群事务”之间的关联，我再多做一些讨论。
+
+艰苦和乏味的工作，实则是一个维护者对开源社群当中开发者体验设身处地的考察。如果发现和修复不稳定测试有一套相对可靠稳定的方法论，那么这项工作未必是艰苦和乏味的。能够耐下性子来做大家不愿意做但是对项目的易用性或开发者体验有帮助的工作，很难不说体现出一种对社群的责任心。也只有亲自体验过这些工作为什么艰苦和乏味，才有资格推动流程优化。否则只是捧着软件工程书本上的说辞，甚至拍脑袋想出来的点子，越积极推动，对社群的负面影响反而越大。
+
+重要的功能扩展的设计实现，进一步说是软件的未来要往何处走。比如 Flink 的流计算 API 显然从根本上影响了 Flink 项目未来的走向，Flink Application Mode 部署模式的推出和对 Kubernetes 的支持则显著扩张了 Flink 应用在生产环境的使用场景，也让 [StreamPark](https://streampark.apache.org/) 项目的作者下定决心做一个流计算应用开发、部署和监控平台。一个深度参与到项目未来发展的成员，不是维护者也说不过去。
+
+很多人在我今年成为 Apache 软件基金会的正式成员以后，问我成为 ASF Member 的诀窍是什么，这跟上面提到的参与社群事务是一致的。因为我相信 The Apache Way 的理念，在中文世界里大力推广 Apache 的开源理念；不止参与一个 Apache 项目，而是积极推动不同项目之间的联动，例如 Pulsar 踩出了 Maven Shade Plugin 的问题，就在上游修复；参与到孵化器项目的讨论。如此反复，当前的 ASF Member 认同我在基金会层面的协同的开源理念传播的贡献，再由姜宁老师提名，成为 ASF Member 也就水到渠成。
+
+我参与 Flink 社群并成为 Committer 花了一年左右的时间，期间完成了对 Runtime 代码的重构并修复了数十个 Runtime 的并发问题，也主导完成了 FLIP 的设计、发起和实现。但是我对 Flink 的发布和代码以外的工作不是特别关心，后来因为工作内容的变化，也没有太多参与到社群事务当中去，于是成为 Committer 三年以来也就没有被邀请成为 PMC 的成员。反过来，我在成为 Curator PMC Member 以后，把 Curator 积压的 Jira 问题和 PR 处理一空，并作为 Release Manager 发布了 5.3.0 版本，参与完成了对 ZooKeeper 新版本新功能的接入兼容。
+
+这就引出在讨论 Maintainer 的标准后的最后一个点：邀请谁作为 Maintainer 要基于对他已有工作的评估，而不能基于假设；但是 Maintainer 的标准对于大部分社群来说最好也不要太高，很多人在成为 Maintainer 之后会爆发出超人的热情。
+
+前者，出自我在 PingCAP 的时候回答当时 TiKV Team Leader 问为什么不能直接给员工写权限的问题。现在看来，其实公司项目上这么做也不是不行。但是就相对中立的开源项目来说，你给予员工写权限，只是因为你基于劳动合同和面试流程，认为他会在未来做出足以匹配项目维护者的贡献和赢得权威。这对于其他背景的社群成员来说只是个说法而不是已经实现的参与贡献。对于全职员工来说，每天大部分工作都与开源软件有关，其实已经是非常大的优势了，只要能够按照社群理念积极参与合作，数个月内成为维护者不是什么大问题。相反，如果基于我当时从事 Flink 工作，持续以当时的强度参与一年也能达到 PMC Member 的标准就邀请我，那么后来我工作转变投入减少，这种提前兑现的权威就很容易造成对其他成员的不公平。某些开源项目的维护者基于对社群成员未来的期待授予权限，但是社群成员随后因为种种原因，比如就是想混个头衔进简历，马上就神隐，这个时候邀请新人的维护者就破防了，这就是基于对未来的期待会导致的问题。
+
+后者，对于真心想要打造优秀社群的参与者，他们是天生的技术领袖、社群领袖，如果能够准确的评估他们当前贡献表现出来的责任心和能力，而不是拘泥于僵化的贡献数量指标，这些人在成为 Maintainer 之后可能会爆发出超人的热情。比如 Twice 一开始可能只是听我提起 Kvrocks 需要帮助，因为他刚刚已经在 OneFlow 做过类似的事情了，正想要推广自己的实现。但是社群在他能把这件事情做好并承担后续维护责任后果断邀请成为 Committer 一员，我想对他的激励也是明显的。再加上社群当中其他维护者以身作则回答用户问题和协同参与者的贡献，他在不是 PMC Member 的时候也承担了 PMC Member 的职责，我们就认为应该让他成为 PMC Member 以帮助他做出更大的贡献。
+
+对于维护者的门槛，Apache Incubator PMC Chair Justin Mclean 还有这样一段话：
+
+> IMO setting the bar to be a) significant feature contributions or b) long-term participation in community building is too high. You want to be again to give committership to people after a short time to encourage people to make further contributions, not to get a goal that only some people will reach. Remember, not everyone will be able to work full time on your project due to their time zone, day job, family commitment, or other factors. While each project is free to set the bar, please don't make the mistake of setting the bar too high.
+
+开源社群的协同模式像是[《合作的进化》](https://book.douban.com/subject/26901444/)当中提到的志同道合愿意合作的小群体，在复杂世界当中生存下来并不断通过合作产生 1+1>2 的效果扩张群体范围。虽然对参与者的热情和能力的评估是有必要的，但是开源协同更多的是基于善意的假设。就像《合作的进化》当中提到的一样，如果倾向于背叛的人太多，那么最优策略就是你也选择背叛，但是如果开源社群一开始就有一个选择合作的领导核心和运行理念，那么即使吸纳进来选择背叛的新成员，他也会很快因为得不到收益而离开。
+
+最后罗列一些 Maintainer 的标准、职责和权利的参考资料。
+
+* [Apache Flink: What are we looking for in PMC members](https://flink.apache.org/contributing/how-to-contribute.html)
+* [Apache TVM Committer Guide](https://tvm.apache.org/docs/contribute/committer_guide.html)
+* [Apache TVM Community Guideline](https://tvm.apache.org/docs/contribute/community.html)
+* [Kubernetes: Community Membership](https://github.com/kubernetes/community/blob/master/community-membership.md)
+* [PEP 13 – Python Language Governance](https://peps.python.org/pep-0013/)
+* [Perl Rules of Governance](https://perldoc.perl.org/perlgov)
+* [PostgreSQL: Committers](https://wiki.postgresql.org/wiki/Committers)
+* [Rust: Governance](https://forge.rust-lang.org/governance/index.html)

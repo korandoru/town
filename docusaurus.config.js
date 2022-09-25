@@ -40,6 +40,8 @@ const config = {
                 },
                 blog: {
                     showReadingTime: true,
+                    blogSidebarTitle: '全部博文',
+                    blogSidebarCount: 'ALL',
                     editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
                 },
                 theme: {
