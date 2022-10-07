@@ -60,8 +60,7 @@ function SelectedContributors({activeContributors, selectMonth}): JSX.Element {
         </tr>
       </thead>
       <tbody>
-        {
-          activeContributors
+        {activeContributors
           .filter(line => line.activeMonth.startsWith(selectMonth))
           .map((line, i) => (
             <tr key={`${line.actorLogin}-${i}`}>
