@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import type {VercelRequest, VercelResponse} from '@vercel/node'
 import {ActiveContributor} from '@site/type/active-contributor'
 
 export default async function (_: VercelRequest, res: VercelResponse) {
@@ -27,13 +27,15 @@ export default async function (_: VercelRequest, res: VercelResponse) {
     method: 'GET'
   })
   const result = await response.json()
-  res.send(result.data.map(
-    r =>
-      ({
-        actorLogin: r.actor_login,
-        activeMonth: r.t,
-        activityCount: r.c,
-        activityRank: r.n
-      } as ActiveContributor)
-  ))
+  res.send(
+    result.data.map(
+      r =>
+        ({
+          actorLogin: r.actor_login,
+          activeMonth: r.t,
+          activityCount: r.c,
+          activityRank: r.n
+        } as ActiveContributor)
+    )
+  )
 }
