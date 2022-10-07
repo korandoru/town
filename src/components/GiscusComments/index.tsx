@@ -13,7 +13,7 @@ function themeFromColorMode(): Theme {
   }
 }
 
-export default function Comments({discussionId}): JSX.Element {
+export default function GiscusComments({discussionId}): JSX.Element {
   return (
     <Giscus
       id='comments'

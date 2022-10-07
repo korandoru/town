@@ -2189,7 +2189,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/theme-classic@npm:2.1.0":
+"@docusaurus/theme-classic@npm:2.1.0, @docusaurus/theme-classic@npm:^2.1.0":
   version: 2.1.0
   resolution: "@docusaurus/theme-classic@npm:2.1.0"
   dependencies:
@@ -9416,6 +9416,7 @@ __metadata:
     "@docusaurus/core": 2.1.0
     "@docusaurus/module-type-aliases": 2.1.0
     "@docusaurus/preset-classic": 2.1.0
+    "@docusaurus/theme-classic": ^2.1.0
     "@docusaurus/theme-common": 2.1.0
     "@docusaurus/types": 2.1.0
     "@easyops-cn/docusaurus-search-local": ^0.31.0
