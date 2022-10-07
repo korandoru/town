@@ -1,3 +1,4 @@
+import fetch from "node-fetch"
 import type {VercelRequest, VercelResponse} from '@vercel/node'
 import {ActiveContributor} from '@site/type/active-contributor'
 
