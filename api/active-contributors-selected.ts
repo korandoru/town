@@ -1,6 +1,7 @@
-import {ActiveContributor} from './model'
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import {ActiveContributor} from '@site/type/active-contributor'
 
-export default async function fetcher<JSON = any>(ignore): Promise<JSON> {
+export default async function (_: VercelRequest, res: VercelResponse) {
   const queryParams = new URLSearchParams({
     user: 'explorer',
     default_format: 'JSON',
@@ -26,7 +27,7 @@ export default async function fetcher<JSON = any>(ignore): Promise<JSON> {
     method: 'GET'
   })
   const result = await response.json()
-  return result.data.map(
+  res.send(result.data.map(
     r =>
       ({
         actorLogin: r.actor_login,
@@ -34,5 +35,5 @@ export default async function fetcher<JSON = any>(ignore): Promise<JSON> {
         activityCount: r.c,
         activityRank: r.n
       } as ActiveContributor)
-  )
+  ))
 }
