@@ -32,4 +32,3 @@ jobs:
       - run: corepack enable
       - run: yarn install
       - run: yarn run format
-      - run: yarn run lint
