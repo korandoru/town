@@ -7,26 +7,26 @@ function themeFromColorMode(): Theme {
   const {colorMode} = useColorMode()
   switch (colorMode) {
     case 'light':
-      return "light"
+      return 'light'
     case 'dark':
-      return "dark"
+      return 'dark'
   }
 }
 
 export default function GiscusComments({discussionId}): JSX.Element {
   return (
     <Giscus
-      id='comments'
-      repo='korandoru/open-source-town'
-      repoId='R_kgDOH0siXw'
-      mapping='number'
+      id="comments"
+      repo="korandoru/open-source-town"
+      repoId="R_kgDOH0siXw"
+      mapping="number"
       term={discussionId}
-      reactionsEnabled='1'
-      emitMetadata='0'
-      inputPosition='top'
+      reactionsEnabled="1"
+      emitMetadata="0"
+      inputPosition="top"
       theme={themeFromColorMode()}
-      lang='zh-CN'
-      loading='lazy'
+      lang="zh-CN"
+      loading="lazy"
     />
   )
 }

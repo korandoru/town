@@ -5,7 +5,5 @@ import {useDocsSidebar} from '@docusaurus/theme-common/internal'
 
 export default function DocCardListAll(): JSX.Element {
   const items = useDocsSidebar().items.filter(item => item.docId != 'overview')
-  return (
-    <DocCardList items={items}/>
-  )
+  return <DocCardList items={items} />
 }
