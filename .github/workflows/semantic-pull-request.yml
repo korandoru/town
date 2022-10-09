@@ -32,7 +32,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           types: |
-            feat
+            feat # feature
             fix
             refactor
             content
