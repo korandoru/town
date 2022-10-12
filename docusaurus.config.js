@@ -62,7 +62,7 @@ const config = {
                 },
                 items: [
                     {to: '/individuals/overview', label: '个体参与', position: 'left'},
-                    {to: '/communities/overview', label: '社群案例', position: 'left'},
+                    {to: '/communities/overview', label: '社群建设', position: 'left'},
                     {to: '/enterprise/overview', label: '企业沙盘', position: 'left'},
                     {to: '/dashboard/overview', label: '数字看板', position: 'left'},
                     {to: '/blog', label: '集体智慧', position: 'left'},
