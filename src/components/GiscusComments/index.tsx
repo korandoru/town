@@ -17,7 +17,7 @@ export default function GiscusComments({discussionId}): JSX.Element {
   return (
     <Giscus
       id="comments"
-      repo="korandoru/open-source-town"
+      repo="korandoru/town"
       repoId="R_kgDOH0siXw"
       mapping="number"
       term={discussionId}

@@ -14,9 +14,6 @@ const config = {
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
 
-    organizationName: 'korandoru',
-    projectName: 'open-source-town',
-
     i18n: {
         defaultLocale: 'zh-CN',
         locales: ['zh-CN'],
@@ -36,13 +33,13 @@ const config = {
                     showLastUpdateAuthor: true,
                     showLastUpdateTime: true,
                     sidebarPath: require.resolve('./sidebars.js'),
-                    editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
+                    editUrl: 'https://github.com/korandoru/town/tree/main/',
                 },
                 blog: {
                     showReadingTime: true,
                     blogSidebarTitle: '全部博文',
                     blogSidebarCount: 'ALL',
-                    editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
+                    editUrl: 'https://github.com/korandoru/town/tree/main/',
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
@@ -67,7 +64,7 @@ const config = {
                     {to: '/dashboard/overview', label: '数字看板', position: 'left'},
                     {to: '/blog', label: '集体智慧', position: 'left'},
                     {
-                        href: 'https://github.com/korandoru/open-source-town',
+                        href: 'https://github.com/korandoru/town',
                         position: 'right',
                         className: 'header-github-link',
                         'aria-label': 'GitHub repository',
@@ -107,7 +104,7 @@ const config = {
                 showLastUpdateAuthor: true,
                 showLastUpdateTime: true,
                 sidebarPath: require.resolve('./sidebars.js'),
-                editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
+                editUrl: 'https://github.com/korandoru/town/tree/main/',
             },
         ],
         [
@@ -119,7 +116,7 @@ const config = {
                 showLastUpdateAuthor: true,
                 showLastUpdateTime: true,
                 sidebarPath: require.resolve('./sidebars.js'),
-                editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
+                editUrl: 'https://github.com/korandoru/town/tree/main/',
             },
         ],
         [
@@ -131,7 +128,7 @@ const config = {
                 showLastUpdateAuthor: true,
                 showLastUpdateTime: true,
                 sidebarPath: require.resolve('./sidebars.js'),
-                editUrl: 'https://github.com/korandoru/open-source-town/tree/main/',
+                editUrl: 'https://github.com/korandoru/town/tree/main/',
             },
         ],
     ]
