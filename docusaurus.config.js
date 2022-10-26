@@ -58,7 +58,7 @@ const config = {
                     src: 'img/logo.svg',
                 },
                 items: [
-                    {to: '/individuals/overview', label: '个体参与', position: 'left'},
+                    {to: '/individuals/overview', label: '个人参与', position: 'left'},
                     {to: '/communities/overview', label: '社群建设', position: 'left'},
                     {to: '/enterprise/overview', label: '企业沙盘', position: 'left'},
                     {to: '/dashboard/overview', label: '数字看板', position: 'left'},
