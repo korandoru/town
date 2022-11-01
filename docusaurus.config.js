@@ -131,6 +131,9 @@ const config = {
                 editUrl: 'https://github.com/korandoru/town/tree/main/',
             },
         ],
+    ],
+    scripts: [
+        "/js/matomo-agent.js"
     ]
 };
 
