@@ -132,9 +132,8 @@ const config = {
             },
         ],
     ],
-    scripts: [
-        "/js/matomo-agent.js"
-    ]
+    clientModules: [require.resolve('./globalClientModule.ts')],
+    scripts: ["/js/matomo-agent.js"],
 };
 
 module.exports = config;
