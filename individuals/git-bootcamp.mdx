@@ -105,8 +105,8 @@ git clone --recursive https://github.com/ClickHouse/ClickHouse.git
 
 1. 打开 http://github.com/apache/pulsar 仓库页面。
 2. 点击页面右上方的 `Fork` 按钮。
-3. 选择正确的账号并确认。现在，GitHub 支持并建议 fork 时只包括上游的默认分支。
-4. 成功后，应该可以在个人账号下看到 fork 出来的 pulsar 仓库。例如选择 tisonkun 账号，就可以在 https://github.com/tisonkun/pulsar 看到 fork 出来的仓库。
+3. 选择正确的账号并确认。
+4. 成功后，应该可以在个人账号下看到 fork 出来的 pulsar 仓库。
 
 :::note
 
@@ -151,3 +151,137 @@ git push --set-upstream dev
 第二，默认分支自动拉取上游，无需额外的配置。大部分情况下，fork 仓库的默认分支都不会再更新。如果 origin 是 fork 仓库，要想拉取上游默认分支，要么需要修改仓库配置里的分支上游，要么就要在 fork 仓库页面上 Sync fork 在拉取，都需要额外的操作。
 
 第三，推送分支的命令更简洁。如果 origin 是 fork 仓库，则 `git push` 时需要在 `--set-upstream origin` 后再加一个分支名。
+
+## 常用技巧
+
+### 暂存变更
+
+开发者经常会在当前 codebase 上做一些尝试性的修改，这些修改可能是半成品，不能作为一个完整的 commit 提交。
+
+这个时候，你又有了新的点子或者想要切换到另一件事情上。如果你不想把这些变更用一个类似 `save` 的无意义提交暂存下来，或者就是在默认分支上随便改改不能提交的，可以使用 `git stash` 命令暂存所有变更，随后想要重做刚才尝试下的修改，执行 `git stash pop` 把暂存的变更复原。
+
+### 重置变更
+
+同样是在当前 codebase 上做一些尝试性的修改，另一个常见的情况是想把所有对当前文件或者 codebase 的改动全部回滚。这往往是因为 troubleshooting 改着改着已经改晕了，或者过程中引入了太多 hacky 改动，需要回滚所有变更重做。
+
+对于单一文件，可以执行以下命令回滚：
+
+```shell
+git checkout -- /path/to/file
+```
+
+对于整个代码仓库，可以执行以下命令回滚：
+
+```shell
+git add .
+git reset --hard HEAD
+```
+
+后面一个命令非常暴力，建议操作前阅读[官方文档](https://git-scm.com/book/zh/v2/Git-工具-重置揭密)。
+
+### 回滚操作
+
+Git 的每一个操作都是有记录日志的。哪怕是上面提到的暴力操作 `git reset` 也可以从操作日志中回滚，具体做法如下：
+
+```shell
+git reflog show
+# Find the exact version you want below:
+# 4b6cf8e (HEAD -> master, origin/master, origin/HEAD) HEAD@{0}: reset: moving to origin/master
+# 295f07d HEAD@{1}: pull: Merge made by the 'recursive' strategy.
+# 7c49ec7 HEAD@{2}: commit: restore dependencies to the User model
+# fa57f59 HEAD@{3}: commit: restore dependencies to the Profile model
+# 3431936 HEAD@{4}: commit (amend): restore admin
+# 033f5c0 HEAD@{5}: commit: restore admin
+# ecd2c1d HEAD@{6}: commit: re-enable settings app
+# ...
+
+# In case you want to reset to HEAD@{2}:
+git reset HEAD@{2}
+```
+
+当然，如果操作日志本身丢失或者被删除清理，那就无法通过这种方式回滚了。
+
+### 分支别名
+
+尽管大部分开源软件仓库的默认分支都是 `main` 分支或 `master` 分支，但是还是存在不少使用 `dev` 或 `unstable` 或 `trunk` 作为默认分支名的项目。为了统一分支之间的切换体验，可以为所有默认分支添加一个 `main` 的别名，具体做法如下：
+
+```shell
+git symbolic-ref refs/heads/main refs/heads/unstable
+```
+
+### 清理无用的分支
+
+经过一段时间的开发，本地经常会出现各种无用的分支，无论是废弃不再继续，还是上游已经合并。为了清理本地仓库状态，可以执行以下命令：
+
+```shell
+git fetch -p
+git fetch dev -p
+# Exclude more branches from removal by piping `grep -v`
+git branch | grep -v main | xargs git branch -D
+```
+
+### Rebase
+
+某些开源项目维护者会要求补丁作者 rebase commit 以改善 review 进程。
+
+对于要求在合并前 rebase 成一个 commit 的要求，你可以反驳 GitHub 已经提供了 [squash and merge](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-commits) 功能，无需开发者在手动操作。
+
+对于希望把 commit 按改动点重新梳理的请求，大部分情况下还是重做更加迅速。Rebase 的概念和执行方式相当复杂，建议阅读 [rebase 的官方文档](https://git-scm.com/book/zh/v2/Git-分支-变基)并总是使用 `git rebase -i` 走交互式界面执行。
+
+### GitHub CLI
+
+[GitHub CLI](https://cli.github.com/) 是 GitHub 官方推出的命令行工具，结合 git 使用可以更加高效地完成 GitHub 相关的操作。下载安装请参考 [GitHub CLI 安装指南](https://github.com/cli/cli#installation)。
+
+对于 macOS 用户来说，利用 Homebrew 运行一行命令即可安装：
+
+```shell
+brew install gh
+```
+
+安装完成后，运行以下命令并按照提示关联账号：
+
+```shell
+gh auth login
+```
+
+### 拉取其他人的 Pull Request
+
+对于 Reviewer 来说，拉取其他人的 Pull Request 到本地测试，随便改改看看行为，都是非常常见的需求。在 GitHub CLI 之前，实现这个常见操作所需的命令都是相对复杂的。
+
+GitHub CLI 完成这一操作的方式是：
+
+```shell
+gh pr checkout <pr-number>
+```
+
+GitHub CLI 背后完成了设置 remote 地址，拉取分支和设置分支上游的动作。只要不是 Pull Request 分支名与其他 remote 分支名冲突，基本可以无感地做后续的 pull 和 push 动作，对应的 remote 分支都是补丁作者的那个分支。
+
+### Cherry-pick
+
+对于维护多个版本分支的项目来说，cherry-pick 也就是把提交到其他版本分支的操作也是常见操作。一般来说，这需要做一系列的 commit pick 操作，非常麻烦。
+
+安装 GitHub CLI 之后，可以进一步添加 `gh-cherry-pick` 插件：
+
+```shell
+gh extension install tisonkun/gh-cherry-pick
+```
+
+按照 [README 文档](https://github.com/tisonkun/gh-cherry-pick)配置好环境变量后，一行命令就可以以 PR 粒度 cherry-pick 补丁了。
+
+例如，将 Apache Flink 的 [#21069](https://github.com/apache/flink/pull/21069) cherry-pick 到 release-1.15 分支的过程如下：
+
+```shell
+export UPSTREAM_REMOTE=origin
+export FORK_REMOTE=dev
+export GITHUB_USER=tisonkun
+export EDIT_PR_TITLE=1
+export EDIT_PR_BODY=1
+gh cherry-pick origin/release-1.15 21069
+```
+
+相应填写 PR 标题和内容后，最终结果如 [#21100](https://github.com/apache/flink/pull/21100) 所示。
+
+## 延伸阅读
+
+* Git 官方推荐 [Pro Git](https://git-scm.com/book/en/v2) 作为参考书，可在线全文免费阅读。
+* Atlassian 也有面向任务分门别类的高质量 [Git 教程](https://www.atlassian.com/git/tutorials)。
