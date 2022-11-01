@@ -46,3 +46,15 @@ git config --global user.email your.email@example.com
 运行上面两行命令，将用户名和邮箱的内容根据本人信息替换，就完成了用户名和邮箱的全局配置。通常来说，Git 的全局配置是用户级别的，类 Unix 系统上使用 `$HOME/.gitconfig` 作为默认配置文件路径。因此只要开发机器完全是你本人独占，或者本人独占开发机上的一个用户，都可以使用这个方式进行全局配置。
 
 GitHub 等平台是通过邮件地址关联账号的，阅读[对应的官方文档](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address)确保两个地方配置的是相同的邮件地址。
+
+:::note
+
+对于 Windows 用户来说，还有一个关键的全局配置：
+
+```shell
+git config --global core.autocrlf input
+```
+
+这能避免 Windows 默认换行符和类 Unix 系统默认换行符不同，带来的编辑过程中大量引入不必要或者错误的换行符替换的问题。
+
+:::
