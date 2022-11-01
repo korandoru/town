@@ -1,0 +1,35 @@
+---
+sidebar_position: 2
+---
+
+# 配置 Git 与常用技巧
+
+当前，众多开源软件源代码都托管在 GitHub 平台上。即便不是如此，绝大多数软件源代码也是基于 Git 来做版本管理的。
+
+因此，对于参与开源社群的非技术人员，或者首次参与协同开发的工程师来说，正确地配置 Git 和掌握常用技巧，就是能否适应开源协同工作流程的第一道门槛。
+
+这个页面将介绍如何正确地完成 Git 的基础配置，以及开源协同的开发合作过程中常用的 Git 技巧。
+
+## 安装 Git
+
+Git 的官方网站有针对不同平台的安装手册，也包括非官方的 GUI 工具推荐。可以阅读[官方下载页面](https://git-scm.com/downloads)对应自己的环境和需求选择。
+
+对于 Windows 用户来说，从上面的页面点击 Windows 分类，下载安装包，双击打开一路下一步即可。
+
+对于 macOS 用户来说，通常需要运行 `xcode-select --install` 来安装苹果打包的包含 Git 的基本命令行工具。随后，可以从包管理器 [Homebrew](https://brew.sh/) 上安装 Git 的最新版本：
+
+```shell
+# 如果尚未安装 Homebrew 则运行下面命令安装
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 安装最新版本的 Git
+brew install git
+```
+
+对于 Linux 用户来说，大部分可以用发行版绑定的包管理器安装 Git 对应发行版版本的稳定版本。例如在 Debian/Ubuntu 系统上，运行下面命令安装：
+
+```shell
+apt-get install git
+```
+
+当然，Git 也是开源软件，因此可以从[源码下载页面](https://mirrors.edge.kernel.org/pub/software/scm/git/)下载源代码后按照 `INSTALL` 文件的说明配置、编译并安装。
