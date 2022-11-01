@@ -1,0 +1,287 @@
+---
+sidebar_position: 2
+---
+
+# 配置 Git 与常用技巧
+
+当前，众多开源软件源代码都托管在 GitHub 平台上。即便不是如此，绝大多数软件源代码也是基于 Git 来做版本管理的。
+
+因此，对于参与开源社群的非技术人员，或者首次参与协同开发的工程师来说，正确地配置 Git 和掌握常用技巧，就是能否适应开源协同工作流程的第一道门槛。
+
+这个页面将介绍如何正确地完成 Git 的基础配置，以及开源协同的开发合作过程中常用的 Git 技巧。
+
+## 安装 Git
+
+Git 的官方网站有针对不同平台的安装手册，也包括非官方的 GUI 工具推荐。可以阅读[官方下载页面](https://git-scm.com/downloads)对应自己的环境和需求选择。
+
+对于 Windows 用户来说，从上面的页面点击 Windows 分类，下载安装包，双击打开一路下一步即可。
+
+对于 macOS 用户来说，通常需要运行 `xcode-select --install` 来安装苹果打包的包含 Git 的基本命令行工具。随后，可以从包管理器 [Homebrew](https://brew.sh/) 上安装 Git 的最新版本：
+
+```shell
+# 如果尚未安装 Homebrew 则运行下面命令安装
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 安装最新版本的 Git
+brew install git
+```
+
+对于 Linux 用户来说，大部分可以用发行版绑定的包管理器安装 Git 对应发行版版本的稳定版本。例如在 Debian/Ubuntu 系统上，运行下面命令安装：
+
+```shell
+apt-get install git
+```
+
+当然，Git 也是开源软件，因此可以从[源码下载页面](https://mirrors.edge.kernel.org/pub/software/scm/git/)下载源代码后按照 `INSTALL` 文件的说明配置、编译并安装。
+
+## 全局配置
+
+### 用户名和邮箱
+
+只有正确配置了用户名和邮箱，提交补丁的时候 GitHub 平台才能把具体的 commit 和用户关联起来，从而正确统计和展示属于你的代码变更。
+
+```shell
+git config --global user.name "Your Name"
+git config --global user.email your.email@example.com
+```
+
+运行上面两行命令，将用户名和邮箱的内容根据本人信息替换，就完成了用户名和邮箱的全局配置。通常来说，Git 的全局配置是用户级别的，类 Unix 系统上使用 `$HOME/.gitconfig` 作为默认配置文件路径。因此只要开发机器完全是你本人独占，或者本人独占开发机上的一个用户，都可以使用这个方式进行全局配置。
+
+GitHub 等平台是通过邮件地址关联账号的，阅读[对应的官方文档](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address)确保两个地方配置的是相同的邮件地址。
+
+### gitignore 规则
+
+软件开发环境经常会产生大量的中间产物和本地文件，这些内容不应该被提交到代码仓库当中。一般来说，项目本身导致的需要忽略的文件，会添加到项目目录下的 `.gitignore` 文件当中。但是也有相当部分的文件跟特定的开发平台和开发环境相关，上游项目未必会接受为特殊开发者服务的忽略规则。
+
+因此，为了方便自己的开发体验，可以做以下配置来忽略由于自己开发环境产生的本地文件：
+
+```shell
+git config --global core.excludesFile /path/to/gitignore
+```
+
+其中最后一个参数是任意选择的存放 gitignore 规则的文件路径，通常可以选择根目录下的 `.gitignore` 文件。注意，配置文件当中的路径最好是绝对路径，因为配置文件解析时不保证且基本不会是 shell 会话环境，所以 shell 环境下特有的符号和变量比如 `~` 或 `$HOME` 可能不会被正确解析。
+
+### GPG 签名
+
+GitHub 对于使用与账号关联的 GPG 签名的 commit 会显示 Verified 字样，表示这个 commit 根据 GPG 加密规则可以确认是由号主本人提交的。
+
+这有什么用呢？实际上，Git commit 的用户名和邮箱是可以随便填写的，而 GitHub 会信任用户填写的信息自动做关联。这个特性曾经被人用于制作 Linus 删除了 Linux 项目的[恶作剧](https://github.com/torvalds/linux/tree/8bcab0346d4fcf21b97046eb44db8cf37ddd6da0)。可以看到，当前提交显示是 Linus Torvalds 的账号，但是没有 Verified 字样，因此并不能肯定是 Linus 本人。
+
+配置 GPG 签名的过程比较复杂，可以阅读 GitHub [关于 GPG 签名的官方文档](https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key)一步步配置。
+
+:::tip
+
+对于 Windows 用户来说，还有一个关键的全局配置：
+
+```shell
+git config --global core.autocrlf input
+```
+
+这能避免 Windows 默认换行符和类 Unix 系统默认换行符不同，带来的编辑过程中大量引入不必要或者错误的换行符替换的问题。
+
+:::
+
+## Clone, Fork, and Pull Request
+
+全局配置完成后，就能正式进入开发和提交补丁的流程了。
+
+不像大部分教程介绍的 fork, clone, and pull request 流程，实际上符合上游优先直觉的参与过程应该是 clone, fork, and pull request 才对。
+
+第一步，当你看到一个有趣的项目，起了阅读代码和开发的念头，此时你并不知道自己是不是真的会提交一个补丁，所以做简单的做法是直接从上游地址克隆源代码。例如，要想克隆 Apache Pulsar 的源代码，可以执行以下命令：
+
+```shell
+git clone https://github.com/apache/pulsar.git
+```
+
+如果是有 [Git Submodules](https://git-scm.com/book/zh/v2/Git-工具-子模块) 的项目，例如 ClickHouse 等，则可以执行以下命令完整克隆所有相关源代码：
+
+```shell
+git clone --recursive https://github.com/ClickHouse/ClickHouse.git
+```
+
+随后，你就可以打开项目源代码开始阅读，做一些变更并观察效果。
+
+第二步，当你发现本地的变更值得推送回上游时，由于你没有权限直接 push commit 到上游仓库，你需要从上游仓库 fork 一份到自己的工作空间当中，从而进一步推送修改和提交补丁。同样以 Apache Pulsar 为例，
+
+1. 打开 http://github.com/apache/pulsar 仓库页面。
+2. 点击页面右上方的 `Fork` 按钮。
+3. 选择正确的账号并确认。
+4. 成功后，应该可以在个人账号下看到 fork 出来的 pulsar 仓库。
+
+:::note
+
+传统的开源协同不基于 GitHub 这样的平台开发，一般是在本地切出分支制作好补丁文件后，直接把补丁文件发送到邮件列表或 Jira 案件上做代码评审。如果感兴趣，推荐阅读 [Linux Kernel 的补丁提交流程](https://www.kernel.org/doc/html/latest/process/5.Posting.html)。
+
+:::
+
+第三步，fork 动作只是发生在 GitHub 平台上，接下来还需要在本地 Git 仓库配置 remote 信息，注意一下 Git 操作的当前路径都是项目根目录。
+
+```shell
+git remote add dev https://github.com/<your-user-name>/<project>.git
+```
+
+还是以 Apache Pulsar 为例，将用户名和仓库名相应替换后运行上述命令，成功返回后查询当前 remote 配置信息：
+
+```shell
+git remote -v
+#OUTPUT:
+#dev	https://github.com/tisonkun/pulsar.git (fetch)
+#dev	https://github.com/tisonkun/pulsar.git (push)
+#origin	https://github.com/apache/pulsar.git (fetch)
+#origin	https://github.com/apache/pulsar.git (push)
+```
+
+接下来，就可以切出开发分支，commit 变更并提交补丁了。
+
+在命令行界面完成 commit 动作并将改动分支推送到 fork 仓库上：
+
+```shell
+git checkout -b feature-branch
+git add .
+git commit -s -m "commit message"
+git push --set-upstream dev
+```
+
+打开上游仓库页面。如果你是刚推送的分支，GitHub 会有横幅提示，点击 `Compare & pull request` 从最近推送的对应分支创建一个 Pull Request 请求；否则，需要从 `Pull requests` 页面点击 `New pull request` 按钮，点击蓝色的 `compare cross forks` 字样，选择 HEAD 信息为 fork 仓库和对应的分支来创建。
+
+相比于常见的 fork and clone 流程以及后续将 fork 分支作为 origin 而把上游称为 upstream 的做法，这里介绍的 clone and fork 流程有以下几点好处。
+
+第一，顺序自然。不是每个克隆的项目在一开始就都是为了提交补丁，这样的顺序不需要在一开始就创建一个 fork 仓库。
+
+第二，默认分支自动拉取上游，无需额外的配置。大部分情况下，fork 仓库的默认分支都不会再更新。如果 origin 是 fork 仓库，要想拉取上游默认分支，要么需要修改仓库配置里的分支上游，要么就要在 fork 仓库页面上 Sync fork 在拉取，都需要额外的操作。
+
+第三，推送分支的命令更简洁。如果 origin 是 fork 仓库，则 `git push` 时需要在 `--set-upstream origin` 后再加一个分支名。
+
+## 常用技巧
+
+### 暂存变更
+
+开发者经常会在当前 codebase 上做一些尝试性的修改，这些修改可能是半成品，不能作为一个完整的 commit 提交。
+
+这个时候，你又有了新的点子或者想要切换到另一件事情上。如果你不想把这些变更用一个类似 `save` 的无意义提交暂存下来，或者就是在默认分支上随便改改不能提交的，可以使用 `git stash` 命令暂存所有变更，随后想要重做刚才尝试下的修改，执行 `git stash pop` 把暂存的变更复原。
+
+### 重置变更
+
+同样是在当前 codebase 上做一些尝试性的修改，另一个常见的情况是想把所有对当前文件或者 codebase 的改动全部回滚。这往往是因为 troubleshooting 改着改着已经改晕了，或者过程中引入了太多 hacky 改动，需要回滚所有变更重做。
+
+对于单一文件，可以执行以下命令回滚：
+
+```shell
+git checkout -- /path/to/file
+```
+
+对于整个代码仓库，可以执行以下命令回滚：
+
+```shell
+git add .
+git reset --hard HEAD
+```
+
+后面一个命令非常暴力，建议操作前阅读[官方文档](https://git-scm.com/book/zh/v2/Git-工具-重置揭密)。
+
+### 回滚操作
+
+Git 的每一个操作都是有记录日志的。哪怕是上面提到的暴力操作 `git reset` 也可以从操作日志中回滚，具体做法如下：
+
+```shell
+git reflog show
+# Find the exact version you want below:
+# 4b6cf8e (HEAD -> master, origin/master, origin/HEAD) HEAD@{0}: reset: moving to origin/master
+# 295f07d HEAD@{1}: pull: Merge made by the 'recursive' strategy.
+# 7c49ec7 HEAD@{2}: commit: restore dependencies to the User model
+# fa57f59 HEAD@{3}: commit: restore dependencies to the Profile model
+# 3431936 HEAD@{4}: commit (amend): restore admin
+# 033f5c0 HEAD@{5}: commit: restore admin
+# ecd2c1d HEAD@{6}: commit: re-enable settings app
+# ...
+
+# In case you want to reset to HEAD@{2}:
+git reset HEAD@{2}
+```
+
+当然，如果操作日志本身丢失或者被删除清理，那就无法通过这种方式回滚了。
+
+### 分支别名
+
+尽管大部分开源软件仓库的默认分支都是 `main` 分支或 `master` 分支，但是还是存在不少使用 `dev` 或 `unstable` 或 `trunk` 作为默认分支名的项目。为了统一分支之间的切换体验，可以为所有默认分支添加一个 `main` 的别名，具体做法如下：
+
+```shell
+git symbolic-ref refs/heads/main refs/heads/unstable
+```
+
+### 清理无用的分支
+
+经过一段时间的开发，本地经常会出现各种无用的分支，无论是废弃不再继续，还是上游已经合并。为了清理本地仓库状态，可以执行以下命令：
+
+```shell
+git fetch -p
+git fetch dev -p
+# Exclude more branches from removal by piping `grep -v`
+git branch | grep -v main | xargs git branch -D
+```
+
+### Rebase
+
+某些开源项目维护者会要求补丁作者 rebase commit 以改善 review 进程。
+
+对于要求在合并前 rebase 成一个 commit 的要求，你可以反驳 GitHub 已经提供了 [squash and merge](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-commits) 功能，无需开发者在手动操作。
+
+对于希望把 commit 按改动点重新梳理的请求，大部分情况下还是重做更加迅速。Rebase 的概念和执行方式相当复杂，建议阅读 [rebase 的官方文档](https://git-scm.com/book/zh/v2/Git-分支-变基)并总是使用 `git rebase -i` 走交互式界面执行。
+
+### GitHub CLI
+
+[GitHub CLI](https://cli.github.com/) 是 GitHub 官方推出的命令行工具，结合 git 使用可以更加高效地完成 GitHub 相关的操作。下载安装请参考 [GitHub CLI 安装指南](https://github.com/cli/cli#installation)。
+
+对于 macOS 用户来说，利用 Homebrew 运行一行命令即可安装：
+
+```shell
+brew install gh
+```
+
+安装完成后，运行以下命令并按照提示关联账号：
+
+```shell
+gh auth login
+```
+
+### 拉取其他人的 Pull Request
+
+对于 Reviewer 来说，拉取其他人的 Pull Request 到本地测试，随便改改看看行为，都是非常常见的需求。在 GitHub CLI 之前，实现这个常见操作所需的命令都是相对复杂的。
+
+GitHub CLI 完成这一操作的方式是：
+
+```shell
+gh pr checkout <pr-number>
+```
+
+GitHub CLI 背后完成了设置 remote 地址，拉取分支和设置分支上游的动作。只要不是 Pull Request 分支名与其他 remote 分支名冲突，基本可以无感地做后续的 pull 和 push 动作，对应的 remote 分支都是补丁作者的那个分支。
+
+### Cherry-pick
+
+对于维护多个版本分支的项目来说，cherry-pick 也就是把提交到其他版本分支的操作也是常见操作。一般来说，这需要做一系列的 commit pick 操作，非常麻烦。
+
+安装 GitHub CLI 之后，可以进一步添加 `gh-cherry-pick` 插件：
+
+```shell
+gh extension install tisonkun/gh-cherry-pick
+```
+
+按照 [README 文档](https://github.com/tisonkun/gh-cherry-pick)配置好环境变量后，一行命令就可以以 PR 粒度 cherry-pick 补丁了。
+
+例如，将 Apache Flink 的 [#21069](https://github.com/apache/flink/pull/21069) cherry-pick 到 release-1.15 分支的过程如下：
+
+```shell
+export UPSTREAM_REMOTE=origin
+export FORK_REMOTE=dev
+export GITHUB_USER=tisonkun
+export EDIT_PR_TITLE=1
+export EDIT_PR_BODY=1
+gh cherry-pick origin/release-1.15 21069
+```
+
+相应填写 PR 标题和内容后，最终结果如 [#21100](https://github.com/apache/flink/pull/21100) 所示。
+
+## 延伸阅读
+
+* Git 官方推荐 [Pro Git](https://git-scm.com/book/en/v2) 作为参考书，可在线全文免费阅读。
+* Atlassian 也有面向任务分门别类的高质量 [Git 教程](https://www.atlassian.com/git/tutorials)。
