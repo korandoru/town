@@ -34,7 +34,9 @@ apt-get install git
 
 当然，Git 也是开源软件，因此可以从[源码下载页面](https://mirrors.edge.kernel.org/pub/software/scm/git/)下载源代码后按照 `INSTALL` 文件的说明配置、编译并安装。
 
-## 配置用户名和邮箱
+## 全局配置
+
+### 用户名和邮箱
 
 只有正确配置了用户名和邮箱，提交补丁的时候 GitHub 平台才能把具体的 commit 和用户关联起来，从而正确统计和展示属于你的代码变更。
 
@@ -47,6 +49,26 @@ git config --global user.email your.email@example.com
 
 GitHub 等平台是通过邮件地址关联账号的，阅读[对应的官方文档](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address)确保两个地方配置的是相同的邮件地址。
 
+### 全局 gitignore 规则
+
+软件开发环境经常会产生大量的中间产物和本地文件，这些内容不应该被提交到代码仓库当中。一般来说，项目本身导致的需要忽略的文件，会添加到项目目录下的 `.gitignore` 文件当中。但是也有相当部分的文件跟特定的开发平台和开发环境相关，上游项目未必会接受为特殊开发者服务的忽略规则。
+
+因此，为了方便自己的开发体验，可以做以下配置来忽略由于自己开发环境产生的本地文件：
+
+```shell
+git config --global core.excludesFile /path/to/gitignore
+```
+
+其中最后一个参数是任意选择的存放 gitignore 规则的文件路径，通常可以选择根目录下的 `.gitignore` 文件。注意，配置文件当中的路径最好是绝对路径，因为配置文件解析时不保证且基本不会是 shell 会话环境，所以 shell 环境下特有的符号和变量比如 `~` 或 `$HOME` 可能不会被正确解析。
+
+### GPG 签名
+
+GitHub 对于使用与账号关联的 GPG 签名的 commit 会显示 Verified 字样，表示这个 commit 根据 GPG 加密规则可以确认是由号主本人提交的。
+
+这有什么用呢？实际上，Git commit 的用户名和邮箱是可以随便填写的，而 GitHub 会信任用户填写的信息自动做关联。这个特性曾经被人用于制作 Linus 删除了 Linux 项目的[恶作剧](https://github.com/torvalds/linux/tree/8bcab0346d4fcf21b97046eb44db8cf37ddd6da0)。可以看到，当前提交显示是 Linus Torvalds 的账号，但是没有 Verified 字样，因此并不能肯定是 Linus 本人。
+
+配置 GPG 签名的过程比较复杂，可以阅读 GitHub [关于 GPG 签名的官方文档](https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key)一步步配置。
+
 :::note
 
 对于 Windows 用户来说，还有一个关键的全局配置：
@@ -58,3 +80,7 @@ git config --global core.autocrlf input
 这能避免 Windows 默认换行符和类 Unix 系统默认换行符不同，带来的编辑过程中大量引入不必要或者错误的换行符替换的问题。
 
 :::
+
+## Fork, Clone, and Pull Request
+
+全局配置完成后，就能正式进入开发和提交补丁的流程了。
