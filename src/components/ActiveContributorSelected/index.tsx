@@ -1,13 +1,12 @@
 import useSWR from 'swr'
 import React, {useEffect, useMemo, useState} from 'react'
-import {ActiveContributor} from '@site/type/active-contributor'
+import {ActiveContributor} from '@site/src/type/active-contributor'
 import lodash from 'lodash'
 import {FormControl, MenuItem, Select, SelectChangeEvent} from '@mui/material'
-
-const fetcher = url => fetch(`/api/${url}`).then(r => r.json())
+import fetcher from '@site/src/lib/fetcher'
 
 export default function ActiveContributorSelected(): JSX.Element {
-  const {data: activeContributors, error} = useSWR<ActiveContributor[]>('active-contributors-selected', fetcher)
+  const {data: activeContributors, error} = useSWR<ActiveContributor[]>('active-contributors', fetcher)
   const activeMonths = useMemo(() => lodash.uniq(activeContributors?.map(line => line.activeMonth).sort()), [activeContributors])
   const [selectMonth, setSelectMonth] = useState('')
 
