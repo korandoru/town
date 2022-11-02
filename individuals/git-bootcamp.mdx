@@ -51,9 +51,9 @@ GitHub 等平台是通过邮件地址关联账号的，阅读[对应的官方文
 
 ### git pull 策略
 
-默认情况下，`git pull` 会将远端分支的 commit 以 `merge` 的方式合并到本地分支之上。然而，大多数情况下本地分支是下游，远端分支是上游，将本地的 commit `rebase` 到远端分支之上是更好的做法，这可以令 commit history 保持整洁。
+默认情况下，`git pull` 会将远端分支的 commit 以 `merge` 的方式合并到本地分支之上。然而，大多数情况下本地分支是下游，远端分支是上游，将本地的 commit `rebase` 到远端分支之上是更好的做法。这可以保持 commit history 整洁。
 
-为此，`git pull` 提供 `--merge` 和 `--rebase` 两种策略，默认为前者。为了不用每次 `git pull` 指定 `--rebase`，可以通过 git config 改变默认的策略：
+`git pull` 提供 `--merge` 和 `--rebase` 两种策略，默认为前者。为了不用每次 `git pull` 指定 `--rebase` 选项，可以配置改变默认策略：
 
 ```shell
 git config --global pull.rebase true
