@@ -1,7 +1,6 @@
 import React from 'react'
-import Giscus from '@giscus/react'
+import Giscus, {Theme} from '@giscus/react'
 import {useColorMode} from '@docusaurus/theme-common'
-import {Theme} from '@giscus/react/dist/types'
 
 function themeFromColorMode(): Theme {
   const {colorMode} = useColorMode()

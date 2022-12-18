@@ -23,7 +23,7 @@
     "@easyops-cn/docusaurus-search-local": "^0.31.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@giscus/react": "^2.2.0",
+    "@giscus/react": "^2.2.3",
     "@mdx-js/react": "^1.6.22",
     "@mui/icons-material": "^5.10.2",
     "@mui/material": "^5.10.2",
