@@ -24,7 +24,7 @@ const FeatureList: FeatureItem[] = [
     title: 'Enterprise',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: <>商业公司的开源策略</>
-  },
+  }
 ]
 
 function Feature({title, Svg, description}: FeatureItem) {
