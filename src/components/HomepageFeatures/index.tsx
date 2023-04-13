@@ -16,15 +16,15 @@ const FeatureList: FeatureItem[] = [
     description: <>值得探索的开源项目</>
   },
   {
-    title: 'Dashboard',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
-    description: <>开源社群的指标看板</>
-  },
-  {
     title: 'Residents',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: <>兴趣使然的小镇居民</>
-  }
+  },
+  {
+    title: 'Enterprise',
+    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    description: <>商业公司的开源策略</>
+  },
 ]
 
 function Feature({title, Svg, description}: FeatureItem) {

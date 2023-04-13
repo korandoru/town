@@ -61,7 +61,6 @@ const config = {
                     {to: '/individuals/overview', label: '个人参与', position: 'left'},
                     {to: '/communities/overview', label: '社群建设', position: 'left'},
                     {to: '/enterprise/overview', label: '企业沙盘', position: 'left'},
-                    {to: '/dashboard/overview', label: '数字看板', position: 'left'},
                     {to: '/blog', label: '集体智慧', position: 'left'},
                     {
                         href: 'https://github.com/korandoru/town',
@@ -113,18 +112,6 @@ const config = {
                 id: 'enterprise',
                 path: 'enterprise',
                 routeBasePath: '/enterprise',
-                showLastUpdateAuthor: true,
-                showLastUpdateTime: true,
-                sidebarPath: require.resolve('./sidebars.js'),
-                editUrl: 'https://github.com/korandoru/town/tree/main/',
-            },
-        ],
-        [
-            '@docusaurus/plugin-content-docs',
-            {
-                id: 'dashboard',
-                path: 'dashboard',
-                routeBasePath: '/dashboard',
                 showLastUpdateAuthor: true,
                 showLastUpdateTime: true,
                 sidebarPath: require.resolve('./sidebars.js'),
